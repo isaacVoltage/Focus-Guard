@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "FocusGuard",
+  "version": "1.0",
+  "description": "Website usage tracker, smart blocker, and Pomodoro focus helper.",
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "notifications",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "FocusGuard"
+  },
+  "options_page": "dashboard.html"
+}

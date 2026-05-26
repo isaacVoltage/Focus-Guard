@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Site Blocked by FocusGuard</title>
+  <link rel="stylesheet" href="ui-styles.css">
+  <style>
+    body { display: flex; justify-content: center; align-items: center; height: 90vh; text-align: center; background-color: #fef2f2; }
+    .block-container { max-width: 480px; width: 100%; border-top: 6px solid #ef4444; }
+    .metric-box { background: #f8fafc; padding: 12px; border-radius: 6px; margin: 16px 0; font-size: 15px; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="block-container card">
+    <h1 style="color: #ef4444; font-size: 28px; margin-bottom: 8px;">🛡️ FocusGuard Blocked</h1>
+    <h3 id="target-site" style="color: #64748b; margin-bottom: 24px;">example.com</h3>
+    
+    <p>You have reached your daily allocated time limit for this website. Access has been locked down to protect your productivity environment.</p>
+    
+    <div class="metric-box">
+      <strong>📊 Session Summary:</strong>
+      <div id="limit-info" style="margin-top: 6px;">Loading configuration data...</div>
+    </div>
+
+    <button class="btn" id="back-btn" style="width: 100%;">Go Back to Safety</button>
+  </div>
+  <script src="block.js"></script>
+</body>
+</html>

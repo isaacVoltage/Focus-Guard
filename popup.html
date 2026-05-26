@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="ui-styles.css">
+  <style>
+    body { width: 340px; box-sizing: border-box; }
+    .input-group { display: flex; gap: 4px; margin-bottom: 8px; }
+    .input-group input, .input-group select { flex: 1; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; }
+    .rule-item { display: flex; justify-content: space-between; align-items: center; padding: 6px; background: #f1f5f9; border-radius: 4px; margin-bottom: 4px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h3>🛡️ FocusGuard Control Center</h3>
+  
+  <div class="card">
+    <h4>📊 Today's Activity Tracker</h4>
+    <div id="quick-stats">Loading statistics...</div>
+  </div>
+  <div class="card" style="border-left: 4px solid #3b82f6; background-color: #f0fdf4;">
+    <label for="profile-selector" style="font-size: 12px; font-weight: bold; color: #1e293b; display: block; margin-bottom: 4px;">🛡️ ENVIRONMENT CONTEXT PROFILE</label>
+    <select id="profile-selector" style="width: 100%; padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: 500;">
+      <option value="Standard">Standard Profile (Basic Limits Only)</option>
+      <option value="Study Mode">📚 Study Mode (Blocks Social/Games/Entertainment)</option>
+      <option value="Coding Mode">💻 Coding Mode (Blocks Entertainment/Games)</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <h4>⚙️ Quick-Add Block Rule</h4>
+    <div class="input-group">
+      <input type="text" id="new-domain" placeholder="e.g., facebook.com">
+    </div>
+    
+    <div class="input-group">
+      <select id="rule-type">
+        <option value="limit">Daily Time Limit (Min)</option>
+        <option value="schedule">Schedule Window</option>
+      </select>
+      <input type="text" id="rule-val1" placeholder="Min (e.g. 30)">
+      <input type="text" id="rule-val2" placeholder="End Time" style="display:none;">
+    </div>
+    <button id="add-rule-btn" class="btn" style="width:100%;">Save Target Rule</button>
+  </div>
+  <div class="card" style="border-top: 4px solid #0f172a;">
+    <h4>🛡️ Currently Monitored Sites</h4>
+    <div id="active-rules-list" style="max-height: 150px; overflow-y: auto; font-size: 13px;">
+      Loading active profiles...
+    </div>
+  </div>
+  <div class="card" style="border-top: 4px solid #a855f7;">
+    <h3 style="color: #a855f7; margin-top: 0;">🎯 Focus Mode (Pomodoro)</h3>
+    
+    <div id="pomodoro-active-view" style="display: none; text-align: center; padding: 10px 0;">
+      <h4 style="color: #ef4444; margin: 0 0 5px 0; letter-spacing: 1px;">🚫 DEEP LOCK ACTIVE</h4>
+      <div id="pomodoro-clock-digits" style="font-size: 36px; font-weight: bold; color: #1e293b; font-variant-numeric: tabular-nums;">00:00</div>
+    </div>
+
+    <div id="pomodoro-setup-view">
+      <div style="margin-bottom: 12px;">
+        <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px;">SELECT TIME INTERACTIVE STATE:</label>
+        <select id="focus-duration-selector" style="width: 100%; padding: 6px; border-radius: 4px; border: 1px solid #cbd5e1;">
+          <option value="25">Standard Pomodoro (25 Min)</option>
+          <option value="50">Extended Deep Work (50 Min)</option>
+          <option value="1">Testing Pulse Run (1 Min)</option>
+          <option value="CUSTOM_MINS">✏️ Custom Minutes...</option>
+          <option value="CUSTOM_HOURS">⏳ Custom Hours...</option>
+        </select>
+      </div>
+
+      <div id="custom-duration-wrapper" style="display: none; margin-bottom: 12px; background: #faf5ff; border: 1px solid #e9d5ff; padding: 10px; border-radius: 6px;">
+        <label id="custom-input-label" style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 4px; color: #7c3aed;">ENTER CUSTOM VALUES:</label>
+        <input type="number" id="custom-duration-input" min="1" placeholder="e.g., 2" style="width: 100%; padding: 5px; box-sizing: border-box; border-radius: 4px; border: 1px solid #cbd5e1; outline: none;">
+      </div>
+
+      <button id="initialize-focus-btn" class="btn" style="width: 100%; background-color: #a855f7; color: white;">Initialize Focus Lock</button>
+    </div>
+  </div>
+   
+  <div id="bypass-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); color: white; z-index: 9999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box;">
+    <h2 style="color: #f59e0b;">⏳ Cool Down Active</h2>
+    <p style="font-size: 14px; margin: 10px 0 20px 0; color: #cbd5e1;">Intentional friction block. Please wait while your unlock request tokens are verified.</p>
+    <div id="bypass-timer" style="font-size: 48px; font-weight: bold; color: white; margin-bottom: 20px;">30s</div>
+    <div style="font-size: 12px; color: #94a3b8; font-style: italic;">"Take a deep breath. Do you really need to access this distraction?"</div>
+  </div>
+
+  <button id="open-dashboard" class="btn" style="width: 100%; margin-top: 8px; background-color: #64748b;">Open Analytics Dashboard</button>
+
+  <script src="popup.js"></script>
+  <div id="challenge-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; color: white; z-index: 10000; flex-direction: column; justify-content: center; padding: 20px; box-sizing: border-box;">
+    <div style="text-align: center;">
+      <h3 style="color: #a855f7; margin-bottom: 5px;">🧠 Focus Verification Challenge</h3>
+      <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Prove conscious intent by typing the mindfulness passage below exactly as shown.</p>
+    </div>
+    
+    <div id="challenge-quote" style="background: #1e293b; padding: 12px; border-left: 4px solid #a855f7; border-radius: 4px; font-size: 13px; font-style: italic; line-height: 1.5; margin-bottom: 15px; user-select: none;">
+      Loading challenge profile...
+    </div>
+
+    <textarea id="challenge-input" placeholder="Begin typing here..." rows="3" style="width: 100%; padding: 10px; background: #1e293b; color: white; border: 1px solid #475569; border-radius: 6px; resize: none; font-size: 13px; box-sizing: border-box; margin-bottom: 15px; outline: none;"></textarea>
+    
+    <div style="display: flex; gap: 10px;">
+      <button id="submit-challenge-btn" class="btn" style="flex: 1; background: #a855f7; color: white;">Verify Override</button>
+      <button id="cancel-challenge-btn" class="btn" style="flex: 1; background: #475569; color: white;">Abort & Go Back</button>
+    </div>
+  </div>
+</body>
+</html>
